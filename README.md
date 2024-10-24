@@ -3,6 +3,21 @@
 
 ![Deployed to Server - Main Branch](https://github.com/MinitwitGroupI/Minitwit/actions/workflows/deploy.yaml/badge.svg?branch=main)
 
+# Energy Measurement
+To run the application you must first spin up a posgres instance
+
+```
+cd src/db/
+docker build -t group-l-posgres .
+docker run --name group-l-posgres -p 5432:5432 -e POSTGRES_PASSWORD=1234 -e POSTGRES_HOST_AUTH_METHOD=trust -d group-l-posgres
+```
+
+Then the app can be run from the [src/backend/](./src/backend/) folder with the following command
+
+```
+gunicorn --bind 0.0.0.0:8000 -k uvicorn.workers.UvicornWorker main:app
+```
+
 # MiniTwit
 
 MiniTwit is a messaging application which was converted from Flask to FastAPI framework.
