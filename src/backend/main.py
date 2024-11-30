@@ -7,7 +7,7 @@ from util.custom_exceptions import Custom_Exception
 from routers import auth, pages, simulation_mapper, users
 from dotenv import dotenv_values
 from starlette.background import BackgroundTask
-from util.prometheus_util import handle_update_metrics, metrics_router
+# from util.prometheus_util import handle_update_metrics, metrics_router
 import time
 from http import HTTPStatus
 from util.app_logger import get_logger
@@ -73,17 +73,17 @@ async def unicorn_exception_handler(request: Request, exc: Custom_Exception):
 app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
 
 
-@app.middleware("http")
-async def add_process_request_count(request: Request, call_next):
-    start_time = time.time()
-    response = await call_next(request)
-    process_time = time.time() - start_time
-    response.background = BackgroundTask(handle_update_metrics, request, process_time)
-    return response
+# @app.middleware("http")
+# async def add_process_request_count(request: Request, call_next):
+#     start_time = time.time()
+#     response = await call_next(request)
+#     process_time = time.time() - start_time
+#     # response.background = BackgroundTask(handle_update_metrics, request, process_time)
+#     return response
 
 
 # routers
-app.include_router(metrics_router)
+# app.include_router(metrics_router)
 app.include_router(simulation_mapper.router)
 app.include_router(pages.router)
 app.include_router(users.router)
